@@ -56,4 +56,4 @@ def post_detail(request, id):
 def category_posts(request, slug):
     category_posts = [post for post in posts if post['category'] == slug]
     return render(request, 'blog/category.html',
-                   {'category': slug, 'posts': category_posts})
+                  {'category': slug, 'posts': category_posts})
