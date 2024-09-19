@@ -1,6 +1,10 @@
 from django.shortcuts import render
+from typing import Dict, List
+from django.http import Http404
 
-posts = [
+Post = Dict[str, str | int]
+
+posts: List[Post] = [
     {
         'id': 0,
         'location': 'Остров отчаянья',
@@ -44,13 +48,18 @@ posts = [
 ]
 
 
+POSTS_BY_ID: Dict[int, Post] = {post['id']: post for post in posts}
+
 def index(request):
     reversed_posts = list(reversed(posts))
     return render(request, 'blog/index.html', {'posts': reversed_posts})
 
 
-def post_detail(request, id):
-    return render(request, 'blog/detail.html', {'post': posts[id]})
+def post_detail(request, post_id:int):
+    post = POSTS_BY_ID.get(post_id)
+    if post is None:
+        raise Http404('Такого поста нет')
+    return render(request, 'blog/detail.html', {'post': post})
 
 
 def category_posts(request, slug):
