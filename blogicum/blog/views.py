@@ -56,7 +56,7 @@ def index(request):
     return render(request, 'blog/index.html', {'posts': reversed_posts})
 
 
-def post_detail(request, post_id: int):
+def post_detail(request, post_id):
     post = POSTS_BY_ID.get(post_id)
     if post is None:
         raise Http404('Такого поста нет')
