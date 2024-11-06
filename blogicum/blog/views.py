@@ -57,13 +57,13 @@ def index(request):
 
 
 def post_detail(request, post_id):
-    post = POSTS_BY_ID.get(post_id)
-    if post is None:
+    try:
+        post = POSTS_BY_ID[post_id]
+    except IndexError:
         raise Http404('Такого поста нет')
     return render(request, 'blog/detail.html', {'post': post})
 
 
-def category_posts(request, slug):
-    category_posts = [post for post in posts if post['category'] == slug]
-    return render(request, 'blog/category.html',
-                  {'category': slug, 'posts': category_posts})
+def category_posts(request, category_slug):
+    context = {'category_slug': category_slug}
+    return render(request, 'blog/category.html', context)
