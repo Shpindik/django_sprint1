@@ -56,9 +56,9 @@ def index(request):
     return render(request, 'blog/index.html', {'posts': reversed_posts})
 
 
-def post_detail(request, post_id):
+def post_detail(request, id):
     try:
-        post = POSTS_BY_ID[post_id]
+        post = POSTS_BY_ID[id]
     except IndexError:
         raise Http404('Такого поста нет')
     return render(request, 'blog/detail.html', {'post': post})
