@@ -1,10 +1,7 @@
 from django.shortcuts import render
-from typing import Dict, List
 from django.http import Http404
 
-Post = Dict[str, str | int]
-
-posts: List[Post] = [
+posts = [
     {
         'id': 0,
         'location': 'Остров отчаянья',
@@ -48,7 +45,7 @@ posts: List[Post] = [
 ]
 
 
-POSTS_BY_ID: Dict[int, Post] = {post['id']: post for post in posts}
+posts_dict = {post['id']: post for post in posts}
 
 
 def index(request):
@@ -56,14 +53,14 @@ def index(request):
     return render(request, 'blog/index.html', {'posts': reversed_posts})
 
 
-def post_detail(request, id):
-    try:
-        post = POSTS_BY_ID[id]
-    except IndexError:
-        raise Http404('Такого поста нет')
+def post_detail(request, post_id):
+    if post_id not in posts_dict:
+        raise Http404
+    post = posts_dict[post_id]
     return render(request, 'blog/detail.html', {'post': post})
 
 
 def category_posts(request, category_slug):
     context = {'category_slug': category_slug}
     return render(request, 'blog/category.html', context)
+ 
